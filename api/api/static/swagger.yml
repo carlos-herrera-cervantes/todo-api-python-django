@@ -1,0 +1,350 @@
+openapi: 3.0.1
+info:
+  title: To-Do API V1
+  version: v1
+paths:
+  /users:
+    get:
+      tags:
+      - User
+      summary: Return list of users
+      operationId: getUsers
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+    post:
+      tags:
+      - User
+      summary: Create new user
+      operationId: createUser
+      requestBody:
+        description: User that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+          201:
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/definitions/ProducesResponseTypeOkUser'
+          400:
+            $ref: '#/statusCodes/BadRequest'
+          500:
+            $ref: '#/statusCodes/InternalServerError'
+  /users/{id}:
+    get:
+      tags:
+      - User
+      summary: Returns specific user
+      operationId: getUserById
+      parameters:
+      - name: User ID
+        in: path
+        description: The ID of the user to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProducesResponseTypeOkUser'
+        404:
+          $ref: '#/statusCodes/NotFound'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+    patch:
+      tags:
+      - User
+      summary: Update a specific user
+      operationId: updateUserById
+      parameters:
+      - name: User ID
+        in: path
+        description: The ID of user to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: User that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProducesResponseTypeOkUser'
+        404:
+          $ref: '#/statusCodes/NotFound'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+    delete:
+      tags:
+      - User
+      summary: Delete a specific user
+      operationId: deleteUserById
+      parameters:
+      - name: User ID
+        in: path
+        description: The ID of user to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          $ref: '#/statusCodes/NoContent'
+        404:
+          $ref: '#/statusCodes/NotFound'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+  /users/{user_id}/todos:
+    get:
+      tags:
+      - ToDos
+      summary: Return list of to-dos
+      operationId: getTodos
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ToDo'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+    post:
+      tags:
+      - ToDos
+      summary: Create new to-do
+      operationId: createTodo
+      requestBody:
+        description: Todo that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDo'
+      responses:
+          201:
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/definitions/ProducesResponseTypeOkToDo'
+          400:
+            $ref: '#/statusCodes/BadRequest'
+          500:
+            $ref: '#/statusCodes/InternalServerError'
+  /users/{user_id}/todos/{id}:
+    get:
+      tags:
+      - ToDos
+      summary: Returns specific to-do
+      operationId: getTodoById
+      parameters:
+      - name: ToDo ID
+        in: path
+        description: The ID of the to-do to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProducesResponseTypeOkToDo'
+        404:
+          $ref: '#/statusCodes/NotFound'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+    patch:
+      tags:
+      - ToDos
+      summary: Update a specific to-do
+      operationId: updateTodoById
+      parameters:
+      - name: ToDo ID
+        in: path
+        description: The ID of to-do to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ToDo that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDo'
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProducesResponseTypeOkToDo'
+        404:
+          $ref: '#/statusCodes/NotFound'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+    delete:
+      tags:
+      - ToDos
+      summary: Delete a specific to-do
+      operationId: deleteTodoById
+      parameters:
+      - name: ToDo ID
+        in: path
+        description: The ID of to-do to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          $ref: '#/statusCodes/NoContent'
+        404:
+          $ref: '#/statusCodes/NotFound'
+        500:
+          $ref: '#/statusCodes/InternalServerError'
+statusCodes:
+  NoContent:
+    description: No Content
+    content: {}
+  NotFound:
+    description: Not Found
+    content: {}
+  InternalServerError:
+    description: Internal Server Error
+    content: {}
+  BadRequest:
+    description: Bad Request
+    content: {}
+definitions:
+  ProducesResponseTypeOkUser:
+    type: object
+    properties:
+      status:
+        type: boolean
+        description: Status of operation
+      data:
+        type: object
+        description: User object
+    example:
+      status: true
+      data:
+        id: 5f4c9fbdcea374dd0b1cffe2
+        first_name: Carlos
+        last_name: Herrera
+        email: carlos@remastered.com
+        role: Admin
+        created_at: '2020-10-01T00:00:00'
+        updated_at: '2020-10-01T00:00:00'
+  ProducesResponseTypeOkToDo:
+    type: object
+    properties:
+      status:
+        type: boolean
+        description: Status of operation
+      data:
+        type: object
+        description: ToDo object
+    example:
+      status: true
+      data:
+        id: 5f4c9fbdcea374dd0b1cffe2
+        title: Go to Acapulco
+        description: I want go to Acapulco to see my family
+        done: false
+        created_at: '2020-10-01T00:00:00'
+        updated_at: '2020-10-01T00:00:00'
+components:
+  schemas:
+    User:
+      required:
+        - email
+        - first_name
+        - last_name
+        - password
+      type: object
+      properties:
+        id:
+          type: string
+          description: User ID
+        email:
+          type: string
+          description: User email
+        first_name:
+          type: string
+          description: User first name
+        last_name:
+          type: string
+          description: User last name
+        password:
+          type: string
+          description: User password
+        role:
+          type: string
+          description: User role
+        created_at:
+          type: string
+          format: date-time
+          description: Date in that user was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Date in that user was updated
+    ToDo:
+      required:
+        - title
+        - description
+      type: object
+      properties:
+        id:
+          type: string
+          description: User ID
+        title:
+          type: string
+          description: ToDo title
+        description:
+          type: string
+          description: ToDo description
+        done:
+          type: boolean
+          description: Indicates if the to-do was finished
+        created_at:
+          type: string
+          format: date-time
+          description: Date in that user was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Date in that user was updated
